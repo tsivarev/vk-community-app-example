@@ -8,6 +8,37 @@ var app = {
     show: function(page){
         app.hideAll();
         page.style.display = 'block';
+
+        if(page == app.pages.PICK_PHOTO){
+
+            var requestData = {
+                "owner_id": sessionStorage.getItem('viewer_id'),
+                "count": 5,
+                "skip_hidden": 1
+            };
+
+            try {
+                var list = document.createElement('ul');
+
+                VK.api("photos.getAll", requestData, function (data) {
+
+                    for (var i = 0; i < data.response.items.length; i++) {
+                        
+                        var elem = data.response.items[i];
+
+                        var liElem = document.createElement('li');
+                            liElem.appendChild(document.createElement('img').src = elem.photo_75 );
+
+                            list.appendChild(liElem);
+                    }
+
+                    document.getElementById('page3').appendChild(list);
+                });
+            } catch (e) {
+                console.log(e.message);
+            }
+
+        }
     },
     hideAll: function(){
         for (var i = 0; i < app.pages.length; i++) {
@@ -21,7 +52,10 @@ window.addEventListener('load', function(){
 
     var queryString = window.location.href;
 
-    if (getGroupId(queryString) == 0)
+    sessionStorage.setItem('viewer_id',
+                            getQueryItemValue(queryString, 'viewer_id'));
+
+    if (getQueryItemValue(queryString, 'group_id') == 0)
         app.show(app.pages.INSTALL);
     else
         app.show(app.pages.START);
@@ -41,12 +75,14 @@ window.addEventListener('load', function(){
         }
     });
 
-    function getGroupId(str){
-        var pos = str.indexOf('group_id=');
+    function getQueryItemValue(str, item){
+        item += '=';
+
+        var pos = str.indexOf(item);
 
         if(pos == -1) return 0;
 
-        var id = str.substr( pos + 9 );
+        var id = str.substr( pos + item.length);
             id = id.split('&')[0];
 
         return id;
