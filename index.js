@@ -23,7 +23,7 @@ var app = {
                 VK.api("photos.getAll", requestData, function (data) {
 
                     for (var i = 0; i < data.response.items.length; i++) {
-                        
+
                         var elem = data.response.items[i];
 
                         var liElem = document.createElement('li');
@@ -41,9 +41,8 @@ var app = {
         }
     },
     hideAll: function(){
-        for (var i = 0; i < app.pages.length; i++) {
-            app.pages[i].style.display = 'none';
-        }
+        for(var i in app.pages)
+             app.pages[i].style.display = 'none';
     }
 };
 
