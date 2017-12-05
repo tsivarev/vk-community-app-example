@@ -21,15 +21,18 @@ var app = {
                 var list = document.createElement('ul');
 
                 VK.api("photos.getAll", requestData, function (data) {
+                    console.log(data);
+                    for (var i = 0; i < data["response"]["items"].length; i++) {
 
-                    for (var i = 0; i < data.response.items.length; i++) {
-
-                        var elem = data.response.items[i];
+                        var elem = data["response"]["items"][i];
 
                         var liElem = document.createElement('li');
-                            liElem.appendChild(document.createElement('img').src = elem.photo_75 );
+                        var imgElem = document.createElement('img');
+                            imgElem.src = elem["photo_75"];
 
-                            list.appendChild(liElem);
+                        liElem.appendChild(imgElem);
+
+                        list.appendChild(liElem);
                     }
 
                     document.getElementById('page3').appendChild(list);
