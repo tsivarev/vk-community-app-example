@@ -1,5 +1,5 @@
 var app = {
-  APP_ID: 6284574,
+  APP_ID: 6287587,
   API_VERSION: '5.69',
   API_SETTINGS_SCOPE_PHOTOS: 4,
   pages: {
