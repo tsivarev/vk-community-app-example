@@ -31,7 +31,8 @@ var app = {
             let imgElem = document.createElement('img');
 
             imgElem.src = data.response.items[elem].photo_130;
-            imgElem.photoid = data.response.items[elem].photo_604;
+            imgElem.photo_604 = data.response.items[elem].photo_604;
+            imgElem.photoid = data.response.items[elem].id;
             imgElem.onclick = app.onPhotoPicked;
 
             liElem.appendChild(imgElem);
@@ -54,21 +55,25 @@ var app = {
             .addEventListener('click', function(e){
               e.preventDefault();
 
-              VK.callMethod("shareBox",
-                            "https://vk.com/app" + app.APP_ID,
-                            event.target.photoid,
-                            document.getElementById('textarea-description').value);
+              try {
 
-              // var requestData = {
-              //   "owner_id": sessionStorage.getItem('viewer_id'),
-              //   "message": document.getElementById('textarea-description').value,
-              //   "attachments": "photo" + sessionStorage.getItem('viewer_id') +
-              //                   "_" + event.target.photoid + "," + "https://vk.com/app" + app.APP_ID
-              // };
-              //
-              // VK.api("wall.post", requestData, function(data){
-              //     console.log(data);
-              // });
+                VK.callMethod("shareBox",
+                              "https://vk.com/app" + app.APP_ID,
+                              event.target.photo_604,
+                              document.getElementById('textarea-description').value);
+              } catch (catchedEvent) {
+
+                var requestData = {
+                  "owner_id": sessionStorage.getItem('viewer_id'),
+                  "message": document.getElementById('textarea-description').value,
+                  "attachments": "photo" + sessionStorage.getItem('viewer_id') +
+                                  "_" + event.target.photoid + "," + "https://vk.com/app" + app.APP_ID
+                };
+
+                VK.api("wall.post", requestData, function(data){
+                    console.log(data);
+                });
+              }
             });
   },
   hideAll: function() {
