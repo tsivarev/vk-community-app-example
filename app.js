@@ -53,15 +53,10 @@ var app = {
 
     document.getElementById('btn-submit')
             .addEventListener('click', function(e){
+
               e.preventDefault();
 
-              try {
-
-                VK.callMethod("shareBox",
-                              "https://vk.com/app" + app.APP_ID,
-                              event.target.photo_604,
-                              document.getElementById('textarea-description').value);
-              } catch (catchedEvent) {
+              if(app.getQueryItemValue(location.href, 'viewer_device') == 1){
 
                 var requestData = {
                   "owner_id": sessionStorage.getItem('viewer_id'),
@@ -70,15 +65,40 @@ var app = {
                                   "_" + event.target.photoid + "," + "https://vk.com/app" + app.APP_ID
                 };
 
-                VK.api("wall.post", requestData, function(data){
-                    console.log(data);
-                });
+                VK.api("wall.post", requestData);
+
+              } else {
+
+                VK.callMethod("shareBox",
+                              "https://vk.com/app" + app.APP_ID,
+                              event.target.photo_604,
+                              document.getElementById('textarea-description').value);
               }
+
+              var linkTryAgain = document.createElement('a');
+                  linkTryAgain.href = '#';
+                  linkTryAgain.innerHTML = 'Попробовать еще';
+                  linkTryAgain.onclick = location.reload;
+
+              app.PAGES.ENTER_DESCRIPTION.appendChild(linkTryAgain);
+
             });
   },
   hideAll: function() {
     for (var i in app.PAGES)
       app.PAGES[i].style.display = 'none';
+  },
+  getQueryItemValue: function(str, item) {
+    item += '=';
+
+    var position = str.indexOf(item);
+
+    if (position == -1) return 0;
+
+    var id = str.substr(position + item.length);
+    id = id.split('&')[0];
+
+    return id;
   },
   init: function(){
     document.getElementById('btn-include-app')
@@ -89,12 +109,10 @@ var app = {
     var queryString = window.location.href;
 
     sessionStorage.setItem('viewer_id',
-                          getQueryItemValue(queryString, 'viewer_id'));
-    sessionStorage.setItem('viewer_id',
-                          getQueryItemValue(queryString, 'viewer_id'));
+                          app.getQueryItemValue(queryString, 'viewer_id'));
 
 
-    if (getQueryItemValue(queryString, 'group_id') == 0) {
+    if (app.getQueryItemValue(queryString, 'group_id') == 0) {
       app.show(app.PAGES.INSTALL);
     } else {
       app.show(app.PAGES.START);
@@ -114,19 +132,6 @@ var app = {
         app.show(app.PAGES.PICK_PHOTO);
       }
     });
-
-    function getQueryItemValue(str, item) {
-      item += '=';
-
-      var position = str.indexOf(item);
-
-      if (position == -1) return 0;
-
-      var id = str.substr(position + item.length);
-      id = id.split('&')[0];
-
-      return id;
-    }
   }
 };
 
