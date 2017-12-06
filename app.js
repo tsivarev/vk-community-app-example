@@ -78,7 +78,10 @@ var app = {
               var linkTryAgain = document.createElement('a');
                   linkTryAgain.href = '#';
                   linkTryAgain.innerHTML = 'Попробовать еще';
-                  linkTryAgain.onclick = location.reload;
+                  
+                  linkTryAgain.addEventListener('click', function() {
+                    location.reload();
+                  });
 
               app.PAGES.ENTER_DESCRIPTION.appendChild(linkTryAgain);
 
