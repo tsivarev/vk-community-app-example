@@ -8,6 +8,7 @@
     <title>Моя стена - создание постов на стену из приложения сообщества</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="fonts.css">
 </head>
 
 <body>
@@ -15,19 +16,19 @@
         <h1>Моя стена</h1>
     </div>
     <div class="content">
-        <section id="page1" style="display:none;">
+        <section id="page_install" style="display:none;">
             <p><b>Моя стена</b> - это создание постов на стену из приложения сообщества.</p>
             <p>Попробуйте добавлять посты на стену через приложения сообщества. Для этого подключите приложение к одному из администрируемых Вами сообществ.</p>
-            <a href="https://vk.com/add_community_app?aid=6284574" target="_blank" class="btn-vk_ui">Подключить приложение</a>
+            <a href="#" id="btn-include-app" target="_blank" class="btn-vk-ui">Подключить приложение</a>
         </section>
-        <section id="page2" style="display:none;">
+        <section id="page_start" style="display:none;">
             <p>Для начала нужно дать приложению доступ к Вашим фотографиям.</p>
             <h3 class="text-center">Шаг 1</h3>
             <div class="text-center">
-                <a href="#" id="btn-getAccess" target="_blank" class="btn-vk_ui">Открыть доступ</a>
+                <a href="#" id="btn-get-access" target="_blank" class="btn-vk-ui">Открыть доступ</a>
             </div>
         </section>
-        <section id="page3" style="display:none;">
+        <section id="page_pick_photo" style="display:none;">
             <p>Выберите фотографию</p>
             <h3 class="text-center">Шаг 2</h3>
         </section>
@@ -35,6 +36,6 @@
 </body>
 
 <script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
-<script src="index.js"  type="text/javascript"></script>
+<script src="app.js"  type="text/javascript"></script>
 
 </html>
