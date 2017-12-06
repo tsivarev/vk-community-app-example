@@ -10,7 +10,7 @@ var app = {
   },
   show: function(page) {
     app.hideAll();
-    app.page.style.display = 'block';
+    page.style.display = 'block';
 
     if (page == app.pages.PICK_PHOTO) {
 
