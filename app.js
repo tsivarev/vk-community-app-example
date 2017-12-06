@@ -2,17 +2,17 @@ var app = {
   APP_ID: 6287587,
   API_VERSION: '5.69',
   API_SETTINGS_SCOPE_PHOTOS: 4,
-  pages: {
-    INSTALL: document.getElementById('page_install'),
-    START: document.getElementById('page_start'),
-    PICK_PHOTO: document.getElementById('page_pick_photo')
-    /*,CONFIRM: 0*/
+  PAGES: {
+    INSTALL: document.getElementById('page-install'),
+    START: document.getElementById('page-start'),
+    PICK_PHOTO: document.getElementById('page-pick_photo'),
+    ENTER_DESCRIPTION: document.getElementById('page-enter_text')
   },
   show: function(page) {
     app.hideAll();
     page.style.display = 'block';
 
-    if (page == app.pages.PICK_PHOTO) {
+    if (page == app.PAGES.PICK_PHOTO) {
 
       var requestData = {
         "owner_id": sessionStorage.getItem('viewer_id'),
@@ -26,24 +26,49 @@ var app = {
       VK.api("photos.getAll", requestData, function(data) {
         console.log(data);
 
-        for(var elem in data.response.items){
-          var liElem = document.createElement('li');
-          var imgElem = document.createElement('img');
-          imgElem.src = data.response.items[elem].photo_130;
+        for(let elem in data.response.items){
+            let liElem = document.createElement('li');
+            let imgElem = document.createElement('img');
 
-          liElem.appendChild(imgElem);
+            imgElem.src = data.response.items[elem].photo_130;
+            imgElem.photoid = data.response.items[elem].id;
+            imgElem.onclick = app.onPhotoPicked;
 
-          list.appendChild(liElem);
+            liElem.appendChild(imgElem);
+
+            list.appendChild(liElem);
         }
 
-        app.pages.PICK_PHOTO.appendChild(list);
+        app.PAGES.PICK_PHOTO.appendChild(list);
+
       });
 
     }
   },
+  onPhotoPicked: function(event){
+    event.preventDefault();
+
+    app.show(app.PAGES.ENTER_DESCRIPTION);
+
+    document.getElementById('btn-submit')
+            .addEventListener('click', function(e){
+              e.preventDefault();
+
+              var requestData = {
+                "owner_id": sessionStorage.getItem('viewer_id'),
+                "message": document.getElementById('textarea-description').value,
+                "attachments": "photo" + sessionStorage.getItem('viewer_id') +
+                                "_" + event.target.photoid + "," + "https://vk.com/app" + app.APP_ID
+              };
+
+              VK.api("wall.post", requestData, function(data){
+                  console.log(data);
+              });
+            });
+  },
   hideAll: function() {
-    for (var i in app.pages)
-      app.pages[i].style.display = 'none';
+    for (var i in app.PAGES)
+      app.PAGES[i].style.display = 'none';
   },
   init: function(){
     document.getElementById('btn-include-app')
@@ -55,11 +80,14 @@ var app = {
 
     sessionStorage.setItem('viewer_id',
                           getQueryItemValue(queryString, 'viewer_id'));
+    sessionStorage.setItem('viewer_id',
+                          getQueryItemValue(queryString, 'viewer_id'));
+
 
     if (getQueryItemValue(queryString, 'group_id') == 0) {
-      app.show(app.pages.INSTALL);
+      app.show(app.PAGES.INSTALL);
     } else {
-      app.show(app.pages.START);
+      app.show(app.PAGES.START);
     }
 
 
@@ -73,7 +101,7 @@ var app = {
 
       function onSuccess() {
         VK.removeCallback('onSettingsChanged', onSuccess);
-        app.show(app.pages.PICK_PHOTO);
+        app.show(app.PAGES.PICK_PHOTO);
       }
     });
 

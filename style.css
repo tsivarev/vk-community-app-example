@@ -72,4 +72,11 @@ a {
 
 .list-photo img{
   max-height: 80px;
+  cursor: pointer;
+}
+
+.textarea-description{
+  resize: none;
+  height:100px;
+  width: 100%;
 }
