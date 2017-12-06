@@ -21,6 +21,7 @@ var app = {
       };
 
       var list = document.createElement('ul');
+          list.classList.add('list-photo');
 
       VK.api("photos.getAll", requestData, function(data) {
         console.log(data);
@@ -28,7 +29,7 @@ var app = {
         for(var elem in data.response.items){
           var liElem = document.createElement('li');
           var imgElem = document.createElement('img');
-          imgElem.src = data.response.items[elem].photo_75;
+          imgElem.src = data.response.items[elem].photo_130;
 
           liElem.appendChild(imgElem);
 
