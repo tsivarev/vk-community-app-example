@@ -58,6 +58,11 @@ var app = {
 
         if (app.getUrlParameter('viewer_device') == 1) {
 
+          VK.callMethod('shareBox',
+                        'https://vk.com/app' + app.appId,
+                        event.target.photo_604,
+                        document.getElementById('textarea-post-description').value);
+        } else {
           var requestData = {
             'owner_id': sessionStorage.getItem('viewer_id'),
             'message': document.getElementById('textarea-post-description').value,
@@ -66,12 +71,6 @@ var app = {
           };
 
           VK.api('wall.post', requestData);
-
-        } else {
-          VK.callMethod('shareBox',
-                        'https://vk.com/app' + app.appId,
-                        event.target.photo_604,
-                        document.getElementById('textarea-post-description').value);
         }
 
         var linkTryAgainElem = document.createElement('a');
