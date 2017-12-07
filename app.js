@@ -70,12 +70,11 @@ var app = {
             var imgElem = document.createElement('img');
 
             imgElem.src = elem.photo_130;
+            imgElem.onclick = app.onPhotoPicked;
             imgElem.photo_604 = elem.photo_604;
             imgElem.photoid = elem.id;
-            imgElem.onclick = app.onPhotoPicked;
 
             liElem.appendChild(imgElem);
-
             listElem.appendChild(liElem);
           });
 
@@ -92,31 +91,10 @@ var app = {
   onPhotoPicked: function(event) {
     event.preventDefault();
 
+    sessionStorage.setItem('photo_604', event.target.photo_604);
+    sessionStorage.setItem('photo_id', event.target.photoid);
+
     app.show(app.PAGES.ENTER_DESCRIPTION);
-
-    document.getElementById('btn-submit').addEventListener('click', submitHandler);
-
-    function submitHandler(e) {
-      e.preventDefault();
-
-      if (app.getUrlParameter('viewer_device') == 1) {
-
-        VK.callMethod('shareBox',
-                      'https://vk.com/app' + app.appId,
-                      event.target.photo_604,
-                      document.getElementById('textarea-post-description').value);
-      } else {
-        var requestData = {
-          'owner_id': sessionStorage.getItem('viewer_id'),
-          'message': document.getElementById('textarea-post-description').value,
-          'attachments': 'photo' + sessionStorage.getItem('viewer_id') +
-                          '_' + event.target.photoid + ',' +
-                          'https://vk.com/app' + app.appId + '_-' + app.groupId
-        };
-
-        VK.api('wall.post', requestData);
-      }
-    }
   },
 
   hideAll: function() {
@@ -156,6 +134,29 @@ var app = {
             .addEventListener('click', function() {
 
       app.show(app.PAGES.PICK_PHOTO);
+    });
+    document.getElementById('btn-submit')
+            .addEventListener('click', function (e) {
+
+      e.preventDefault();
+
+      if (app.getUrlParameter('viewer_device') == 1) {
+
+        VK.callMethod('shareBox',
+                      'https://vk.com/app' + app.appId,
+                      sessionStorage.getItem('photo_604'),
+                      document.getElementById('textarea-post-description').value);
+      } else {
+        var requestData = {
+          'owner_id': sessionStorage.getItem('viewer_id'),
+          'message': document.getElementById('textarea-post-description').value,
+          'attachments': 'photo' + sessionStorage.getItem('viewer_id') +
+                          '_' + sessionStorage.getItem('photo_id') + ',' +
+                          'https://vk.com/app' + app.appId + '_-' + app.groupId
+        };
+
+        VK.api('wall.post', requestData);
+      }
     });
   }
 };
