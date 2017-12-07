@@ -1,5 +1,4 @@
 var app = {
-  APP_ID: 6287587,
   API_VERSION: '5.69',
   API_SETTINGS_SCOPE_PHOTOS: 4,
   PAGES: {
@@ -8,6 +7,8 @@ var app = {
     PICK_PHOTO: document.getElementById('page-pick-photo'),
     ENTER_DESCRIPTION: document.getElementById('page-enter-text')
   },
+
+  appId: 0,
 
   show: function(page) {
     app.hideAll();
@@ -25,7 +26,6 @@ var app = {
       listElem.classList.add('list-photo');
 
       VK.api('photos.getAll', requestData, function(data) {
-        console.log(data);
 
         data.response.items.forEach(function(elem) {
           var liElem = document.createElement('li');
@@ -62,14 +62,14 @@ var app = {
             'owner_id': sessionStorage.getItem('viewer_id'),
             'message': document.getElementById('textarea-post-description').value,
             'attachments': 'photo' + sessionStorage.getItem('viewer_id') +
-                            '_' + event.target.photoid + ',' + 'https://vk.com/app' + app.APP_ID
+                            '_' + event.target.photoid + ',' + 'https://vk.com/app' + app.appId
           };
 
           VK.api('wall.post', requestData);
 
         } else {
           VK.callMethod('shareBox',
-                        'https://vk.com/app' + app.APP_ID,
+                        'https://vk.com/app' + app.appId,
                         event.target.photo_604,
                         document.getElementById('textarea-post-description').value);
         }
@@ -97,13 +97,15 @@ var app = {
 
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
     var results = regex.exec(location.search);
-    
+
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   },
 
   init: function() {
+    app.appId = app.getUrlParameter('api_id');
+
     document.getElementById('btn-include-app')
-            .href = 'https://vk.com/add_community_app?aid=' + app.APP_ID;
+            .href = 'https://vk.com/add_community_app?aid=' + app.appId;
 
     VK.init(null, null, app.API_VERSION);
 
