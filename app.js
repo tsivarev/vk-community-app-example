@@ -5,9 +5,10 @@ var app = {
   PAGES: {
     INSTALL: document.getElementById('page-install'),
     START: document.getElementById('page-start'),
-    PICK_PHOTO: document.getElementById('page-pick_photo'),
-    ENTER_DESCRIPTION: document.getElementById('page-enter_text')
+    PICK_PHOTO: document.getElementById('page-pick-photo'),
+    ENTER_DESCRIPTION: document.getElementById('page-enter-text')
   },
+
   show: function(page) {
     app.hideAll();
     page.style.display = 'block';
@@ -15,30 +16,30 @@ var app = {
     if (page == app.PAGES.PICK_PHOTO) {
 
       var requestData = {
-        "owner_id": sessionStorage.getItem('viewer_id'),
-        "count": 5,
-        "skip_hidden": 1
+        'owner_id': sessionStorage.getItem('viewer_id'),
+        'count': 5,
+        'skip_hidden': 1
       };
 
       var list = document.createElement('ul');
-          list.classList.add('list-photo');
+      list.classList.add('list-photo');
 
-      VK.api("photos.getAll", requestData, function(data) {
+      VK.api('photos.getAll', requestData, function(data) {
         console.log(data);
 
-        for(let elem in data.response.items){
-            let liElem = document.createElement('li');
-            let imgElem = document.createElement('img');
+        data.response.items.forEach(function(elem) {
+          var liElem = document.createElement('li');
+          var imgElem = document.createElement('img');
 
-            imgElem.src = data.response.items[elem].photo_130;
-            imgElem.photo_604 = data.response.items[elem].photo_604;
-            imgElem.photoid = data.response.items[elem].id;
-            imgElem.onclick = app.onPhotoPicked;
+          imgElem.src = elem.photo_130;
+          imgElem.photo_604 = elem.photo_604;
+          imgElem.photoid = elem.id;
+          imgElem.onclick = app.onPhotoPicked;
 
-            liElem.appendChild(imgElem);
+          liElem.appendChild(imgElem);
 
-            list.appendChild(liElem);
-        }
+          list.appendChild(liElem);
+        });
 
         app.PAGES.PICK_PHOTO.appendChild(list);
 
@@ -46,56 +47,59 @@ var app = {
 
     }
   },
-  onPhotoPicked: function(event){
+
+  onPhotoPicked: function(event) {
     event.preventDefault();
 
     app.show(app.PAGES.ENTER_DESCRIPTION);
 
     document.getElementById('btn-submit')
-            .addEventListener('click', function(e){
+            .addEventListener('click', function(e) {
 
-              e.preventDefault();
+        e.preventDefault();
 
-              if(app.getQueryItemValue(location.href, 'viewer_device') == 1){
+        if (app.getQueryItemValue(location.href, 'viewer_device') == 1) {
 
-                var requestData = {
-                  "owner_id": sessionStorage.getItem('viewer_id'),
-                  "message": document.getElementById('textarea-description').value,
-                  "attachments": "photo" + sessionStorage.getItem('viewer_id') +
-                                  "_" + event.target.photoid + "," + "https://vk.com/app" + app.APP_ID
-                };
+          var requestData = {
+            'owner_id': sessionStorage.getItem('viewer_id'),
+            'message': document.getElementById('textarea-post-description').value,
+            'attachments': 'photo' + sessionStorage.getItem('viewer_id') +
+                            '_' + event.target.photoid + ',' + 'https://vk.com/app' + app.APP_ID
+          };
 
-                VK.api("wall.post", requestData);
+          VK.api('wall.post', requestData);
 
-              } else {
+        } else {
 
-                VK.callMethod("shareBox",
-                              "https://vk.com/app" + app.APP_ID,
-                              event.target.photo_604,
-                              document.getElementById('textarea-description').value);
-              }
+          VK.callMethod('shareBox',
+                        'https://vk.com/app' + app.APP_ID,
+                        event.target.photo_604,
+                        document.getElementById('textarea-post-description').value);
+        }
 
-              var linkTryAgain = document.createElement('a');
-                  linkTryAgain.href = '#';
-                  linkTryAgain.innerHTML = 'Попробовать еще';
-                  
-                  linkTryAgain.addEventListener('click', function() {
-                    location.reload();
-                  });
+        var linkTryAgain = document.createElement('a');
+        linkTryAgain.href = '#';
+        linkTryAgain.innerHTML = 'Попробовать еще';
 
-              app.PAGES.ENTER_DESCRIPTION.appendChild(linkTryAgain);
+        linkTryAgain.addEventListener('click', function() {
+          location.reload();
+        });
 
-            });
+        app.PAGES.ENTER_DESCRIPTION.appendChild(linkTryAgain);
+
+      });
   },
+
   hideAll: function() {
-    for (var i in app.PAGES)
+    for (var i in app.PAGES) {
       app.PAGES[i].style.display = 'none';
+    }
   },
+
   getQueryItemValue: function(str, item) {
     item += '=';
 
     var position = str.indexOf(item);
-
     if (position == -1) return 0;
 
     var id = str.substr(position + item.length);
@@ -103,7 +107,8 @@ var app = {
 
     return id;
   },
-  init: function(){
+
+  init: function() {
     document.getElementById('btn-include-app')
             .href = 'https://vk.com/add_community_app?aid=' + app.APP_ID;
 
@@ -126,8 +131,8 @@ var app = {
             .addEventListener('click', function(e) {
 
       e.preventDefault();
-      VK.callMethod('showSettingsBox', app.API_SETTINGS_SCOPE_PHOTOS); // Доступ к фотографиям
 
+      VK.callMethod('showSettingsBox', app.API_SETTINGS_SCOPE_PHOTOS); // Доступ к фотографиям
       VK.addCallback('onSettingsChanged', onSuccess);
 
       function onSuccess() {

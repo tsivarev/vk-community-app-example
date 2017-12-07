@@ -61,23 +61,23 @@ a {
   font-size: 0.8125em
 }
 
-.list-photo{
+.list-photo {
   padding: 0;
   text-align: center;
 }
 
-.list-photo li{
+.list-photo li {
   display: inline-block;
   margin: 0 3px;
 }
 
-.list-photo img{
+.list-photo img {
   max-height: 80px;
   cursor: pointer;
 }
 
-.textarea-description{
+.textarea-description {
   resize: none;
-  height:100px;
+  height: 100px;
   width: 100%;
 }
