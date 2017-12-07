@@ -1,5 +1,5 @@
 var app = {
-  APP_ID: 6287587,
+  APP_ID: 0,
   API_VERSION: '5.69',
   API_SETTINGS_SCOPE_PHOTOS: 4,
   PAGES: {
@@ -25,8 +25,7 @@ var app = {
       listElem.classList.add('list-photo');
 
       VK.api('photos.getAll', requestData, function(data) {
-        console.log(data);
-
+        
         data.response.items.forEach(function(elem) {
           var liElem = document.createElement('li');
           var imgElem = document.createElement('img');
@@ -97,11 +96,13 @@ var app = {
 
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
     var results = regex.exec(location.search);
-    
+
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   },
 
   init: function() {
+    app.APP_ID = app.getUrlParameter('api_id');
+
     document.getElementById('btn-include-app')
             .href = 'https://vk.com/add_community_app?aid=' + app.APP_ID;
 
