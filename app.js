@@ -21,8 +21,8 @@ var app = {
         'skip_hidden': 1
       };
 
-      var list = document.createElement('ul');
-      list.classList.add('list-photo');
+      var listElem = document.createElement('ul');
+      listElem.classList.add('list-photo');
 
       VK.api('photos.getAll', requestData, function(data) {
         console.log(data);
@@ -38,13 +38,11 @@ var app = {
 
           liElem.appendChild(imgElem);
 
-          list.appendChild(liElem);
+          listElem.appendChild(liElem);
         });
 
-        app.PAGES.PICK_PHOTO.appendChild(list);
-
+        app.PAGES.PICK_PHOTO.appendChild(listElem);
       });
-
     }
   },
 
@@ -70,23 +68,21 @@ var app = {
           VK.api('wall.post', requestData);
 
         } else {
-
           VK.callMethod('shareBox',
                         'https://vk.com/app' + app.APP_ID,
                         event.target.photo_604,
                         document.getElementById('textarea-post-description').value);
         }
 
-        var linkTryAgain = document.createElement('a');
-        linkTryAgain.href = '#';
-        linkTryAgain.innerHTML = 'Попробовать еще';
+        var linkTryAgainElem = document.createElement('a');
+        linkTryAgainElem.href = '#';
+        linkTryAgainElem.innerHTML = 'Попробовать еще';
 
-        linkTryAgain.addEventListener('click', function() {
+        linkTryAgainElem.addEventListener('click', function() {
           location.reload();
         });
 
-        app.PAGES.ENTER_DESCRIPTION.appendChild(linkTryAgain);
-
+        app.PAGES.ENTER_DESCRIPTION.appendChild(linkTryAgainElem);
       });
   },
 
@@ -119,13 +115,11 @@ var app = {
     sessionStorage.setItem('viewer_id',
                           app.getQueryItemValue(queryString, 'viewer_id'));
 
-
     if (app.getQueryItemValue(queryString, 'group_id') == 0) {
       app.show(app.PAGES.INSTALL);
     } else {
       app.show(app.PAGES.START);
     }
-
 
     document.getElementById('btn-get-access')
             .addEventListener('click', function(e) {
