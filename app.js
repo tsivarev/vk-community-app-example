@@ -56,7 +56,7 @@ var app = {
 
         e.preventDefault();
 
-        if (app.getQueryItemValue(location.href, 'viewer_device') == 1) {
+        if (app.getUrlParameter('viewer_device') == 1) {
 
           var requestData = {
             'owner_id': sessionStorage.getItem('viewer_id'),
@@ -92,16 +92,13 @@ var app = {
     }
   },
 
-  getQueryItemValue: function(str, item) {
-    item += '=';
+  getUrlParameter: function(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
 
-    var position = str.indexOf(item);
-    if (position == -1) return 0;
-
-    var id = str.substr(position + item.length);
-    id = id.split('&')[0];
-
-    return id;
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   },
 
   init: function() {
@@ -110,12 +107,10 @@ var app = {
 
     VK.init(null, null, app.API_VERSION);
 
-    var queryString = window.location.href;
-
     sessionStorage.setItem('viewer_id',
-                          app.getQueryItemValue(queryString, 'viewer_id'));
+                          app.getUrlParameter('viewer_id'));
 
-    if (app.getQueryItemValue(queryString, 'group_id') == 0) {
+    if (app.getUrlParameter('group_id') == 0) {
       app.show(app.PAGES.INSTALL);
     } else {
       app.show(app.PAGES.START);
