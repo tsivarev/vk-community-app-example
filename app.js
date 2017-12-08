@@ -1,6 +1,7 @@
 var app = {
   API_VERSION: '5.69',
   API_SETTINGS_SCOPE_PHOTOS: 4,
+  VIEWER_DEVICE_MOBILE: 1,
   PAGES: {
     INSTALL: document.getElementById('page-install'),
     START: document.getElementById('page-start'),
@@ -65,14 +66,14 @@ var app = {
 
         VK.api('photos.getAll', requestData, function(data) {
 
-          data.response.items.forEach(function(elem) {
+          data.response.items.forEach(function(photo) {
             var liElem = document.createElement('li');
             var imgElem = document.createElement('img');
 
-            imgElem.src = elem.photo_130;
+            imgElem.src = photo.photo_130;
             imgElem.onclick = app.onPhotoPicked;
-            imgElem.photo_604 = elem.photo_604;
-            imgElem.photoid = elem.id;
+            imgElem.photo604 = photo.photo_604;
+            imgElem.photoId = photo.id;
 
             liElem.appendChild(imgElem);
             listElem.appendChild(liElem);
@@ -91,8 +92,8 @@ var app = {
   onPhotoPicked: function(event) {
     event.preventDefault();
 
-    sessionStorage.setItem('photo_604', event.target.photo_604);
-    sessionStorage.setItem('photo_id', event.target.photoid);
+    sessionStorage.setItem('photo604', event.target.photo604);
+    sessionStorage.setItem('photo_id', event.target.photoId);
 
     app.show(app.PAGES.ENTER_DESCRIPTION);
   },
@@ -140,11 +141,11 @@ var app = {
 
       e.preventDefault();
 
-      if (app.getUrlParameter('viewer_device') == 1) {
+      if (app.getUrlParameter('viewer_device') == app.VIEWER_DEVICE_MOBILE) {
 
         VK.callMethod('shareBox',
                       'https://vk.com/app' + app.appId,
-                      sessionStorage.getItem('photo_604'),
+                      sessionStorage.getItem('photo604'),
                       document.getElementById('textarea-post-description').value);
       } else {
         var requestData = {
