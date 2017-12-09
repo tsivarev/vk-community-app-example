@@ -20,7 +20,7 @@ var app = {
 
       case app.PAGES.START:
         var requestData = {
-          'user_id': sessionStorage.getItem('viewer_id')
+          'user_id': sessionStorage.getItem('viewerId')
         };
 
         VK.api('account.getAppPermissions', requestData, function(data) {
@@ -38,13 +38,13 @@ var app = {
             btnGetAccessElem.addEventListener('click', getAccess);
           }
 
-          function getAccess(e) {
-            e.preventDefault();
+          function getAccess(event) {
+            event.preventDefault();
 
-            VK.callMethod('showSettingsBox', app.API_SETTINGS_SCOPE_PHOTOS); // Доступ к фотографиям
+            VK.callMethod('showSettingsBox', app.API_SETTINGS_SCOPE_PHOTOS);
             VK.addCallback('onSettingsChanged', onSuccess);
 
-            function onSuccess(event) {
+            function onSuccess() {
               VK.removeCallback('onSettingsChanged', onSuccess);
               app.show(app.PAGES.PICK_PHOTO);
             }
@@ -56,7 +56,7 @@ var app = {
         document.getElementById('container-photos').innerHTML = '';
 
         var requestData = {
-          'owner_id': sessionStorage.getItem('viewer_id'),
+          'owner_id': sessionStorage.getItem('viewerId'),
           'count': 5,
           'skip_hidden': 1
         };
@@ -131,33 +131,31 @@ var app = {
       app.show(app.PAGES.START);
     }
 
-    document.getElementById('btn-back-to-photos')
-            .addEventListener('click', function() {
+    document.getElementById('btn-back-to-photos').addEventListener('click', function(event) {
+        event.preventDefault();
 
-      app.show(app.PAGES.PICK_PHOTO);
+        app.show(app.PAGES.PICK_PHOTO);
     });
-    document.getElementById('btn-submit')
-            .addEventListener('click', function (e) {
+    document.getElementById('btn-submit').addEventListener('click', function (event) {
+        event.preventDefault();
 
-      e.preventDefault();
+        if (app.getUrlParameter('viewer_device') == app.VIEWER_DEVICE_MOBILE) {
 
-      if (app.getUrlParameter('viewer_device') == app.VIEWER_DEVICE_MOBILE) {
+          VK.callMethod('shareBox',
+                        'https://vk.com/app' + app.appId,
+                        sessionStorage.getItem('photoUrl'),
+                        document.getElementById('textarea-post-description').value);
+        } else {
+          var requestData = {
+            'owner_id': sessionStorage.getItem('viewerId'),
+            'message': document.getElementById('textarea-post-description').value,
+            'attachments': 'photo' + sessionStorage.getItem('viewerId') +
+                            '_' + sessionStorage.getItem('photoId') + ',' +
+                            'https://vk.com/app' + app.appId + '_-' + app.groupId
+          };
 
-        VK.callMethod('shareBox',
-                      'https://vk.com/app' + app.appId,
-                      sessionStorage.getItem('photoUrl'),
-                      document.getElementById('textarea-post-description').value);
-      } else {
-        var requestData = {
-          'owner_id': sessionStorage.getItem('viewerId'),
-          'message': document.getElementById('textarea-post-description').value,
-          'attachments': 'photo' + sessionStorage.getItem('viewerId') +
-                          '_' + sessionStorage.getItem('photoId') + ',' +
-                          'https://vk.com/app' + app.appId + '_-' + app.groupId
-        };
-
-        VK.api('wall.post', requestData);
-      }
+          VK.api('wall.post', requestData);
+        }
     });
   }
 };
