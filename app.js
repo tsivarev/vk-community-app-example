@@ -72,7 +72,7 @@ var app = {
 
             imgElem.src = photo.photo_130;
             imgElem.onclick = app.onPhotoPicked;
-            imgElem.photo604 = photo.photo_604;
+            imgElem.photoUrl = photo.photo_604;
             imgElem.photoId = photo.id;
 
             liElem.appendChild(imgElem);
@@ -92,8 +92,8 @@ var app = {
   onPhotoPicked: function(event) {
     event.preventDefault();
 
-    sessionStorage.setItem('photo604', event.target.photo604);
-    sessionStorage.setItem('photo_id', event.target.photoId);
+    sessionStorage.setItem('photoUrl', event.target.photoUrl);
+    sessionStorage.setItem('photoId', event.target.photoId);
 
     app.show(app.PAGES.ENTER_DESCRIPTION);
   },
@@ -122,7 +122,7 @@ var app = {
 
     VK.init(null, null, app.API_VERSION);
 
-    sessionStorage.setItem('viewer_id',
+    sessionStorage.setItem('viewerId',
                           app.getUrlParameter('viewer_id'));
 
     if (app.groupId == 0) {
@@ -145,14 +145,14 @@ var app = {
 
         VK.callMethod('shareBox',
                       'https://vk.com/app' + app.appId,
-                      sessionStorage.getItem('photo604'),
+                      sessionStorage.getItem('photoUrl'),
                       document.getElementById('textarea-post-description').value);
       } else {
         var requestData = {
-          'owner_id': sessionStorage.getItem('viewer_id'),
+          'owner_id': sessionStorage.getItem('viewerId'),
           'message': document.getElementById('textarea-post-description').value,
-          'attachments': 'photo' + sessionStorage.getItem('viewer_id') +
-                          '_' + sessionStorage.getItem('photo_id') + ',' +
+          'attachments': 'photo' + sessionStorage.getItem('viewerId') +
+                          '_' + sessionStorage.getItem('photoId') + ',' +
                           'https://vk.com/app' + app.appId + '_-' + app.groupId
         };
 
