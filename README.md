@@ -1,6 +1,6 @@
 # Пример приложения сообщества ВКонтакте
 
-Подробнее про приложения сообщества можно узнать из [официальной документации](https://vk.com/dev/community_apps)
+Подробнее про приложения сообщества можно узнать из [официальной документации](https://vk.com/dev/community_apps).
 
 ## "Моя стена"
 
@@ -8,8 +8,7 @@
 
 ### Установка
 
-Если вы являетесь администратором сообщества и хотите установить данное приложение к себе в сообщество, перейдите по ссылке
-<https://vk.com/add_community_app?aid=6284574>
+Если вы являетесь администратором сообщества и хотите установить данное приложение к себе в сообщество, перейдите по [ссылке](https://vk.com/add_community_app?aid=6284574).
 
 Разработчики могут скачать приложение, посмотреть код и работу основных функций [Javascript SDK](https://vk.com/dev/Javascript_SDK).
 А также модифицировать и подключить аналогичное приложение.
@@ -25,7 +24,7 @@ git clone https://github.com/tsivarev/vk-community-app-example.git
 
 #### Регистрация приложения ВКонтакте
 
-Чтобы зарегистрировать приложение следует прочитать соответствую [документацию](https://vk.com/dev/community_apps_docs?f=1.%20%D0%A0%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F%20%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F)
+Чтобы зарегистрировать приложение следует прочитать соответствую [документацию](https://vk.com/dev/community_apps_docs?f=1.%20%D0%A0%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F%20%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F).
 
 #### Настройка приложения
 
@@ -38,8 +37,8 @@ https://mydomain.com/vk-community-app/?viewer_device=mobile
 
 ### Скриншоты
 
-![Страница установки](https://github.com/tsivarev/vk-community-app-example/blob/master/images/install.png)
-![Шаг 1 - получение доступа](https://github.com/tsivarev/vk-community-app-example/blob/master/images/step1.png)
-![Шаг 2 - Выбор фото](https://github.com/tsivarev/vk-community-app-example/blob/master/images/step2.png)
-![Шаг 3 - Комментарий и публикация](https://github.com/tsivarev/vk-community-app-example/blob/master/images/step3.png)
-![Результат](https://github.com/tsivarev/vk-community-app-example/blob/master/images/final.png)
+![Страница установки](https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/install.png)
+![Шаг 1 - получение доступа](https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step1.png)
+![Шаг 2 - Выбор фото](https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step2.png)
+![Шаг 3 - Комментарий и публикация](https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step3.png)
+![Результат](https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/final.png)
