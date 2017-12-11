@@ -37,8 +37,8 @@ https://mydomain.com/vk-community-app/?viewer_device=mobile
 
 ### Скриншоты
 
-![Страница установки](https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/install.png)
-![Шаг 1 - получение доступа](https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step1.png)
-![Шаг 2 - Выбор фото](https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step2.png)
-![Шаг 3 - Комментарий и публикация](https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step3.png)
-![Результат](https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/final.png)
+<img src="https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/install.png" width="350px">
+<img src="https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step1.png" width="350px">
+<img src="https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step2.png" width="350px">
+<img src="https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step3.png" width="350px">
+<img src="https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/final.png" width="350px">
