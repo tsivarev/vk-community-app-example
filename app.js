@@ -17,18 +17,15 @@ var app = {
     page.style.display = 'block';
 
     switch (page) {
-
       case app.PAGES.START:
         var requestData = {
           'user_id': sessionStorage.getItem('viewerId')
         };
 
         VK.api('account.getAppPermissions', requestData, function(data) {
-
           var btnGetAccessElem = document.getElementById('btn-get-access');
 
           if (data.response & app.API_SETTINGS_SCOPE_PHOTOS) {
-
             btnGetAccessElem.innerHTML = 'Доступ предоставлен. Продолжить';
             btnGetAccessElem.addEventListener('click', function(event) {
                 event.preventDefault();
@@ -65,7 +62,6 @@ var app = {
         listElem.classList.add('list-photo');
 
         VK.api('photos.getAll', requestData, function(data) {
-
           data.response.items.forEach(function(photo) {
             var liElem = document.createElement('li');
             var imgElem = document.createElement('img');
@@ -136,11 +132,11 @@ var app = {
 
         app.show(app.PAGES.PICK_PHOTO);
     });
+
     document.getElementById('btn-submit').addEventListener('click', function (event) {
         event.preventDefault();
 
         if (app.getUrlParameter('viewer_device').toLowerCase() == app.VIEWER_DEVICE_MOBILE) {
-
           VK.callMethod('shareBox',
                         'https://vk.com/app' + app.appId,
                         sessionStorage.getItem('photoUrl'),
@@ -149,10 +145,11 @@ var app = {
           var photoRawId = 'photo' + sessionStorage.getItem('viewerId') +
                           '_' + sessionStorage.getItem('photoId');
           var appLink = 'https://vk.com/app' + app.appId + '_-' + app.groupId;
+          
           var requestData = {
             'owner_id': sessionStorage.getItem('viewerId'),
             'message': document.getElementById('textarea-post-description').value,
-            'attachments':  photoRawId + ',' + appLink;
+            'attachments':  photoRawId + ',' + appLink
           };
 
           VK.api('wall.post', requestData);
