@@ -6,6 +6,10 @@
 
 Приложение позволяет опубликовать на стену пользователя [сниппет](https://vk.com/page-19542789_50818664) с одной из последних загруженных фотографий. Сниппет будет содержать ссылку на приложениие сообщества, из которого был сделан.
 
+### Попробовать
+
+Данное [приложение](https://vk.com/app6284574_-158343932) доступно из сообщества [Примеры VK](https://vk.com/vk_examples)
+
 ### Установка
 
 Если вы являетесь администратором сообщества и хотите установить данное приложение к себе в сообщество, перейдите по [ссылке](https://vk.com/add_community_app?aid=6284574).
@@ -20,7 +24,7 @@ git clone https://github.com/tsivarev/vk-community-app-example.git
 ```
 Или zip архив https://github.com/tsivarev/vk-community-app-example/archive/master.zip
 
-Загрузите приложение на свой хостинг. Данное приложение использует только клиентскую часть, поэтому также можно использовать github pages.
+Загрузите приложение на свой хостинг. Данное приложение использует только клиентскую часть, поэтому также можно использовать [github pages](https://pages.github.com/).
 
 #### Регистрация приложения ВКонтакте
 
@@ -34,11 +38,3 @@ git clone https://github.com/tsivarev/vk-community-app-example.git
 ```
 https://mydomain.com/vk-community-app/?viewer_device=mobile
 ```
-
-### Скриншоты
-
-<img src="https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/install.png" width="350px">
-<img src="https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step1.png" width="350px">
-<img src="https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step2.png" width="350px">
-<img src="https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/step3.png" width="350px">
-<img src="https://github.com/tsivarev/vk-community-app-example/blob/master/screenshots/final.png" width="350px">
