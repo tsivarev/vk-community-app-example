@@ -31,15 +31,15 @@ git clone https://github.com/tsivarev/vk-community-app-example.git
 
 Настройка приложения интуитивно понятна и не требует дополнительных комментариев.
 
-Приложение использует метод API wall.post, у приложений сообщества есть одна особенность описанная [здесь](https://vk.com/dev/community_apps_docs?f=2.6.%20%D0%9F%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8%20%D0%BD%D0%B0%20%D1%81%D1%82%D0%B5%D0%BD%D0%B5). В связи с этим нам необходимо различать мобильную и десктопную версию. Для этого в настройках приложения в адресе мобильной версии приложения мы явно указываем параметр **viewer_device=1**, например:
+Приложение использует метод API wall.post, у приложений сообщества есть одна особенность описанная [здесь](https://vk.com/dev/community_apps_docs?f=2.6.%20%D0%9F%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B8%20%D0%BD%D0%B0%20%D1%81%D1%82%D0%B5%D0%BD%D0%B5). В связи с этим нам необходимо различать мобильную и десктопную версию. Для этого в настройках приложения в адресе мобильной версии приложения мы явно указываем параметр **viewer_device=mobile**, например:
 ```
-https://mydomain.com/vk-community-app/?viewer_device=1
+https://mydomain.com/vk-community-app/?viewer_device=mobile
 ```
 
 ### Скриншоты
 
-![Страница установки](https://github.com/unvir/vk-community-app-example/blob/master/images/install.png)
-![Шаг 1 - получение доступа](https://github.com/unvir/vk-community-app-example/blob/master/images/step1.png)
-![Шаг 2 - Выбор фото](https://github.com/unvir/vk-community-app-example/blob/master/images/step2.png)
-![Шаг 3 - Комментарий и публикация](https://github.com/unvir/vk-community-app-example/blob/master/images/step3.png)
-![Результат](https://github.com/unvir/vk-community-app-example/blob/master/images/final.png)
+![Страница установки](https://github.com/tsivarev/vk-community-app-example/blob/master/images/install.png)
+![Шаг 1 - получение доступа](https://github.com/tsivarev/vk-community-app-example/blob/master/images/step1.png)
+![Шаг 2 - Выбор фото](https://github.com/tsivarev/vk-community-app-example/blob/master/images/step2.png)
+![Шаг 3 - Комментарий и публикация](https://github.com/tsivarev/vk-community-app-example/blob/master/images/step3.png)
+![Результат](https://github.com/tsivarev/vk-community-app-example/blob/master/images/final.png)

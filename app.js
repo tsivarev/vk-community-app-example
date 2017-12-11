@@ -1,7 +1,7 @@
 var app = {
   API_VERSION: '5.69',
   API_SETTINGS_SCOPE_PHOTOS: 4,
-  VIEWER_DEVICE_MOBILE: 1,
+  VIEWER_DEVICE_MOBILE: 'mobile',
   PAGES: {
     INSTALL: document.getElementById('page-install'),
     START: document.getElementById('page-start'),
@@ -139,19 +139,20 @@ var app = {
     document.getElementById('btn-submit').addEventListener('click', function (event) {
         event.preventDefault();
 
-        if (app.getUrlParameter('viewer_device') == app.VIEWER_DEVICE_MOBILE) {
+        if (app.getUrlParameter('viewer_device').toLowerCase() == app.VIEWER_DEVICE_MOBILE) {
 
           VK.callMethod('shareBox',
                         'https://vk.com/app' + app.appId,
                         sessionStorage.getItem('photoUrl'),
                         document.getElementById('textarea-post-description').value);
         } else {
+          var photoRawId = 'photo' + sessionStorage.getItem('viewerId') +
+                          '_' + sessionStorage.getItem('photoId');
+          var appLink = 'https://vk.com/app' + app.appId + '_-' + app.groupId;
           var requestData = {
             'owner_id': sessionStorage.getItem('viewerId'),
             'message': document.getElementById('textarea-post-description').value,
-            'attachments': 'photo' + sessionStorage.getItem('viewerId') +
-                            '_' + sessionStorage.getItem('photoId') + ',' +
-                            'https://vk.com/app' + app.appId + '_-' + app.groupId
+            'attachments':  photoRawId + ',' + appLink;
           };
 
           VK.api('wall.post', requestData);
