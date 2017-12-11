@@ -121,7 +121,7 @@ var app = {
         sessionStorage.setItem('viewerId',
             app.getUrlParameter('viewer_id'));
 
-        if (app.groupId === 0) {
+        if (app.groupId == 0) {
             app.show(app.PAGES.INSTALL);
         } else {
             app.show(app.PAGES.START);
