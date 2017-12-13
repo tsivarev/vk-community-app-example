@@ -26,7 +26,7 @@ var app = {
                     var btnGetAccessElem = document.getElementById('btn-get-access');
 
                     if (data.response & app.API_SETTINGS_SCOPE_PHOTOS) {
-                        btnGetAccessElem.innerHTML = 'Доступ предоставлен. Продолжить';
+                        btnGetAccessElem.innerHTML = 'Продолжить';
                         btnGetAccessElem.addEventListener('click', function (event) {
                             event.preventDefault();
                             app.show(app.PAGES.PICK_PHOTO);
@@ -114,12 +114,12 @@ var app = {
         app.groupId = app.getUrlParameter('group_id');
 
         document.getElementById('btn-include-app')
-            .href = 'https://vk.com/add_community_app?aid=' + app.appId;
+                .href = 'https://vk.com/add_community_app?aid=' + app.appId;
 
         VK.init(null, null, app.API_VERSION);
 
         sessionStorage.setItem('viewerId',
-            app.getUrlParameter('viewer_id'));
+                                app.getUrlParameter('viewer_id'));
 
         if (app.groupId == 0) {
             app.show(app.PAGES.INSTALL);
