@@ -34,6 +34,7 @@ var app = {
                     } else {
                         btnGetAccessElem.addEventListener('click', getAccess);
                     }
+                    btnGetAccessElem.style.display = 'inline-block';
 
                     function getAccess(event) {
                         event.preventDefault();
