@@ -27,11 +27,11 @@ let app = {
 
         switch (page) {
             case app.pages.start:
-                const REQUEST_START_PAGE_DATA = {
+                let requestStartPageData = {
                     'user_id': sessionStorage.getItem('viewerId')
                 };
 
-                VK.api('account.getAppPermissions', REQUEST_START_PAGE_DATA, data => {
+                VK.api('account.getAppPermissions', requestStartPageData, data => {
 
                     if (data.response & app.API_SETTINGS_SCOPE_PHOTOS) {
                         view.renameButton(app.elements.btnGetAccess, 'Продолжить');
@@ -47,13 +47,13 @@ let app = {
                 break;
 
             case app.pages.pickPhoto:
-                const REQUEST_PICK_PHOTO_DATA = {
+                let requestPickPhotoData = {
                     'owner_id': sessionStorage.getItem('viewerId'),
                     'count': app.COUNT_PHOTOS_TO_SHOW,
                     'skip_hidden': 1
                 };
 
-                VK.api('photos.getAll', REQUEST_PICK_PHOTO_DATA, data => {
+                VK.api('photos.getAll', requestPickPhotoData, data => {
                     view.fillPhotoContainer(app.elements.containerPhotos, data.response.items);
                 });
                 break;
