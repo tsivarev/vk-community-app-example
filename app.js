@@ -1,166 +1,148 @@
-var app = {
+let app = {
     API_VERSION: '5.69',
     API_SETTINGS_SCOPE_PHOTOS: 4,
     VIEWER_DEVICE_MOBILE: 'mobile',
-    PAGES: {
-        INSTALL: document.getElementById('page-install'),
-        START: document.getElementById('page-start'),
-        PICK_PHOTO: document.getElementById('page-pick-photo'),
-        ENTER_DESCRIPTION: document.getElementById('page-enter-text')
-    },
+    COUNT_PHOTOS_TO_SHOW: 5,
 
+    pages: {
+        install: document.getElementById('page-install'),
+        start: document.getElementById('page-start'),
+        pickPhoto: document.getElementById('page-pick-photo'),
+        enterDescription: document.getElementById('page-enter-text')
+    },
+    elements: {
+        btnGetAccess: document.getElementById('btn-get-access'),
+        btnIncludeApp: document.getElementById('btn-include-app'),
+        btnBackToPhotos: document.getElementById('btn-back-to-photos'),
+        btnPostSubmit: document.getElementById('btn-submit'),
+        containerPhotos: document.getElementById('container-photos'),
+        fieldPostDescription: document.getElementById('textarea-post-description')
+    },
     appId: 0,
     groupId: 0,
 
-    show: function (page) {
+    show(page) {
         app.hideAll();
-        page.style.display = 'block';
+        view.show(page);
 
         switch (page) {
-            case app.PAGES.START:
-                var requestData = {
+            case app.pages.start:
+                const REQUEST_START_PAGE_DATA = {
                     'user_id': sessionStorage.getItem('viewerId')
                 };
 
-                VK.api('account.getAppPermissions', requestData, function (data) {
-                    var btnGetAccessElem = document.getElementById('btn-get-access');
+                VK.api('account.getAppPermissions', REQUEST_START_PAGE_DATA, data => {
 
                     if (data.response & app.API_SETTINGS_SCOPE_PHOTOS) {
-                        btnGetAccessElem.innerHTML = 'Продолжить';
-                        btnGetAccessElem.addEventListener('click', function (event) {
+                        view.renameButton(app.elements.btnGetAccess, 'Продолжить');
+                        app.elements.btnGetAccess.addEventListener('click', event => {
                             event.preventDefault();
-                            app.show(app.PAGES.PICK_PHOTO);
+                            app.show(app.pages.pickPhoto);
                         });
                     } else {
-                        btnGetAccessElem.addEventListener('click', getAccess);
+                        app.elements.btnGetAccess.addEventListener('click', app.getAccessPhotoEventListener);
                     }
-                    btnGetAccessElem.style.display = 'inline-block';
-
-                    function getAccess(event) {
-                        event.preventDefault();
-
-                        VK.callMethod('showSettingsBox', app.API_SETTINGS_SCOPE_PHOTOS);
-                        VK.addCallback('onSettingsChanged', onSuccess);
-
-                        function onSuccess() {
-                            VK.removeCallback('onSettingsChanged', onSuccess);
-                            app.show(app.PAGES.PICK_PHOTO);
-                        }
-                    }
+                    view.show(app.elements.btnGetAccess);
                 });
                 break;
 
-            case app.PAGES.PICK_PHOTO:
-                document.getElementById('container-photos').innerHTML = '';
-
-                var requestData = {
+            case app.pages.pickPhoto:
+                const REQUEST_PICK_PHOTO_DATA = {
                     'owner_id': sessionStorage.getItem('viewerId'),
-                    'count': 5,
+                    'count': app.COUNT_PHOTOS_TO_SHOW,
                     'skip_hidden': 1
                 };
 
-                var listElem = document.createElement('ul');
-                listElem.classList.add('list-photo');
-
-                VK.api('photos.getAll', requestData, function (data) {
-                    data.response.items.forEach(function (photo) {
-                        var liElem = document.createElement('li');
-                        var imgElem = document.createElement('img');
-
-                        imgElem.src = photo.photo_130;
-                        imgElem.onclick = app.onPhotoPicked;
-                        imgElem.photoUrl = photo.photo_604;
-                        imgElem.photoId = photo.id;
-
-                        liElem.appendChild(imgElem);
-                        listElem.appendChild(liElem);
-                    });
-
-                    document.getElementById('container-photos').appendChild(listElem);
+                VK.api('photos.getAll', REQUEST_PICK_PHOTO_DATA, data => {
+                    view.fillPhotoContainer(app.elements.containerPhotos, data.response.items);
                 });
                 break;
 
-            case app.PAGES.ENTER_DESCRIPTION:
-                document.getElementById('textarea-post-description').value = '';
+            case app.pages.enterDescription:
+                view.resetElementValue(app.elements.fieldPostDescription);
                 break;
         }
     },
 
-    onPhotoPicked: function (event) {
-        event.preventDefault();
-
-        sessionStorage.setItem('photoUrl', event.target.photoUrl);
-        sessionStorage.setItem('photoId', event.target.photoId);
-
-        app.show(app.PAGES.ENTER_DESCRIPTION);
-    },
-
-    hideAll: function () {
-        for (var i in app.PAGES) {
-            app.PAGES[i].style.display = 'none';
+    hideAll() {
+        for (let i in app.pages) {
+            view.hide(app.pages[i]);
         }
     },
 
-    getUrlParameter: function (name) {
+    getAccessPhotoEventListener(event) {
+        event.preventDefault();
+        VK.callMethod('showSettingsBox', app.API_SETTINGS_SCOPE_PHOTOS);
+        VK.addCallback('onSettingsChanged', onSuccess);
+
+        let onSuccess = () => {
+            VK.removeCallback('onSettingsChanged', onSuccess);
+            app.show(app.pages.pickPhoto);
+        }
+    },
+
+    onPhotoPicked(item) {
+        sessionStorage.setItem('photoUrl', item.getAttribute('photoUrl'));
+        sessionStorage.setItem('photoId', item.getAttribute('photoId'));
+
+        app.show(app.pages.enterDescription);
+    },
+
+    getUrlParameter(name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
 
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
+        let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        let results = regex.exec(location.search);
 
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     },
 
-    init: function () {
+    init() {
         app.appId = app.getUrlParameter('api_id');
         app.groupId = app.getUrlParameter('group_id');
-
-        document.getElementById('btn-include-app')
-                .href = 'https://vk.com/add_community_app?aid=' + app.appId;
+        view.initInstallButton(app.elements.btnIncludeApp, app.appId);
 
         VK.init(null, null, app.API_VERSION);
 
         sessionStorage.setItem('viewerId',
-                                app.getUrlParameter('viewer_id'));
+            app.getUrlParameter('viewer_id'));
 
         if (app.groupId == 0) {
-            app.show(app.PAGES.INSTALL);
+            app.show(app.pages.install);
         } else {
-            app.show(app.PAGES.START);
+            app.show(app.pages.start);
         }
 
-        document.getElementById('btn-back-to-photos').addEventListener('click', function (event) {
+        app.elements.btnBackToPhotos.addEventListener('click', event => {
             event.preventDefault();
-
-            app.show(app.PAGES.PICK_PHOTO);
+            app.show(app.pages.pickPhoto);
         });
 
-        document.getElementById('btn-submit').addEventListener('click', function (event) {
+        app.elements.btnPostSubmit.addEventListener('click', event => {
             event.preventDefault();
+            let appLink = 'https://vk.com/app' + app.appId + '_-' + app.groupId;
+            let viewerDevice = app.getUrlParameter('viewer_device');
 
-            var viewerDevice = app.getUrlParameter('viewer_device');
             if (viewerDevice && viewerDevice === app.VIEWER_DEVICE_MOBILE) {
                 VK.callMethod('shareBox',
-                    'https://vk.com/app' + app.appId,
+                    appLink,
                     sessionStorage.getItem('photoUrl'),
-                    document.getElementById('textarea-post-description').value);
+                    app.elements.fieldPostDescription.value);
             } else {
-                var photoRawId = 'photo' + sessionStorage.getItem('viewerId') +
+                let photoRawId = 'photo' + sessionStorage.getItem('viewerId') +
                     '_' + sessionStorage.getItem('photoId');
-                var appLink = 'https://vk.com/app' + app.appId + '_-' + app.groupId;
 
-                var requestData = {
+                let requestData = {
                     'owner_id': sessionStorage.getItem('viewerId'),
-                    'message': document.getElementById('textarea-post-description').value,
+                    'message': app.elements.fieldPostDescription.value,
                     'attachments': photoRawId + ',' + appLink
                 };
-
-
                 VK.api('wall.post', requestData);
             }
         });
     }
 };
 
-window.addEventListener('load', function () {
+window.addEventListener('load', () => {
     app.init();
 });
